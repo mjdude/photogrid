@@ -25,8 +25,12 @@ router.post('/upload', function(req, res, next){
       newForm.keepExtensions = true;
       newForm.parse(req, function(err, fields, files){
         tmpFile = files.upload.path;
-        fname = '';
+        fname = generateFileName(files.upload.name);
+        nfile = os.tmpDir() + '/' + fname;
+        res.writeHead(200, {'Content-type' : 'text/plain'});
+        res.end();
       });
+
 
 });
 
