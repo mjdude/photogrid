@@ -1,3 +1,6 @@
 {
-  "host": "http://localhost:3000"
+  "host": "http://localhost:3000",
+  "s3AccessKey" : "AKIAICXY2PEY7UZLZWHQ",
+  "s3Secret" : "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",
+  "s3Bucket" : "mj-photogrid",
 }

@@ -1,7 +1,7 @@
 var express = require('express'),
     path = require('path'),
     config = require('./config/config.js'),
-    knox = require('knox')
+    knox = require('knox');
 
 var app = express();
 
@@ -14,7 +14,9 @@ app.set('port', process.env.PORT || 3000);
 app.set('host'. config.host);
 
 var knoxClient = knox.createClient({
-
+  key: config.s3AccessKey,
+  secret: config.s3Secret,
+  bucket: config.s3Bucket,
 });
 
 require('./routes/routes.js')(express, app);
