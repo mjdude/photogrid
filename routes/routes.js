@@ -1,4 +1,4 @@
-module.exports = function(express , app, formidable, fs, os){
+module.exports = function(express , app, formidable, fs, os, rm){
   var router = express.Router();
 
   router.get('/', function(req, res, next){
@@ -30,6 +30,14 @@ router.post('/upload', function(req, res, next){
         res.writeHead(200, {'Content-type' : 'text/plain'});
         res.end();
       });
+
+      newForm.on('end', function(){
+        fs.rename(tmpFile , nfile, function (){
+          gm(nfile).resize(300).write(nfile, function(){
+            
+          })
+        })
+      })
 
 
 });
