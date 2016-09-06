@@ -1,4 +1,4 @@
-module.exports = function(express , app, formidable, fs, os, rm, knoxClient, mongoose, io){
+module.exports = function(express , app, formidable, fs, os, gm, knoxClient, mongoose, io){
 
   var Socket;
 
@@ -11,6 +11,8 @@ module.exports = function(express , app, formidable, fs, os, rm, knoxClient, mon
     votes: Number
   });
 
+  console.log('CHECK singleImage:', singleImage);
+
   var singleImageModel = mongoose.model('singleImage', singleImage);
 
   var router = express.Router();
@@ -20,6 +22,7 @@ module.exports = function(express , app, formidable, fs, os, rm, knoxClient, mon
   });
 
 router.post('/upload', function(req, res, next){
+  console.log('CHECK, POST method called');
   function generateFileName(filename){
     var ext_regex = /(?:\.([^.]+))?$/;
     var ext = ext_regex.exec(filename)[1];
@@ -38,14 +41,26 @@ router.post('/upload', function(req, res, next){
   var newForm = new formidable.IncomingForm();
       newForm.keepExtensions = true;
       newForm.parse(req, function(err, fields, files){
+        console.log('CHECK newForm, files', files);
         tmpFile = files.upload.path;
         fname = generateFileName(files.upload.name);
         nfile = os.tmpDir() + '/' + fname;
         res.writeHead(200, {'Content-type' : 'text/plain'});
         res.end();
+
+        console.log('CHECK newForm, tmpfile', tmpFile);
+        console.log('CHECK newForm, nfile', nfile);
+        console.log('CHECK newForm, fname', fname);
       });
 
+      console.log('CHECK, tmpfile', tmpFile);
+      console.log('CHECK, nfile', nfile);
+      console.log('CHECK, fname', fname);
+
       newForm.on('end', function(){
+        console.log('CHECK newForm.END, tmpfile', tmpFile);
+        console.log('CHECK newForm.END, nfile', nfile);
+        console.log('CHECK newForm.END, fname', fname);
         fs.rename(tmpFile , nfile, function (){
           gm(nfile).resize(300).write(nfile, function(){
             fs.readFile(nfile, function(err, buf){
@@ -55,6 +70,7 @@ router.post('/upload', function(req, res, next){
               });
 
               req.on('response', function(res){
+                console.log('CHECK response statusCode', res.statusCode);
                 if(res.statusCode == 200) {
                   var newImage = new singleImageModel({
                     filename: fname,

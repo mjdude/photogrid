@@ -13,6 +13,7 @@
 			var host = "{{host}}";
 
 			$(document).on('click', '#doUpload', function(){
+				console.log('CLICK uploadNow');
 				uploadNow();
 			})
 
@@ -26,13 +27,20 @@
 			})
 
 			function uploadNow(){
+				console.log('uploadNow in progress');
 				$('.progress').fadeIn(100);
 				var uploadURL = host + '/upload';
 				var uploadFile = $('.uploadPic');
 
-				if(uploadFile.value() != ''){
+				console.log('LOG uploadURL: ', uploadURL);
+				console.log('LOG uploadFile: ', uploadFile);
+				console.log('LOG uploadFile.val: ', uploadFile.val());
+
+				if(uploadFile.val() != ''){
 					var form  = new FormData();
 					form.append("upload", uploadFile[0].files[0]);
+
+					console.log('LOG form append: ', uploadFile[0].files[0]);
 
 					ajax({
 						method: 'post',

@@ -16,8 +16,9 @@ app.set('view engine', 'html');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
-app.set('host'. config.host);
+app.set('host', config.host);
 
+console.log('CHECK config', config);
 var knoxClient = knox.createClient({
   key: config.s3AccessKey,
   secret: config.s3Secret,
@@ -31,4 +32,5 @@ require('./routes/routes.js')(express, app, formidable, fs, os, gm, knoxClient, 
 
 server.listen(app.get('port'), function(){
   console.log('photogrid running on port: ' + app.get('port'));
+
 });
